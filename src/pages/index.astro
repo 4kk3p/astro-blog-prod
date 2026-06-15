@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>K</title>
+
     <style>
       * {
         margin: 0;
@@ -34,10 +35,17 @@
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
+        transform: scale(1.05);
       }
 
       .slide.active {
         opacity: 1;
+        animation: zoom 10s ease-in-out forwards;
+      }
+
+      @keyframes zoom {
+        from { transform: scale(1.05); }
+        to { transform: scale(1.15); }
       }
 
       .overlay {
@@ -53,10 +61,10 @@
         left: 50%;
         transform: translateX(-50%);
         color: #fff;
-        font-size: 18px;
-        letter-spacing: 0.08em;
+        font-size: 20px;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        opacity: 0.8;
+        opacity: 0.85;
       }
     </style>
   </head>
