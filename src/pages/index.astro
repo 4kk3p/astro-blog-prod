@@ -1,22 +1,63 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <title>K</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title="Kuismat" />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1> </h1>
-			<p>
-				
-			</p>
-			
-			
-			
-			
-		</main>
-		<Footer />
-	</body>
-</html>
+    .slider {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.1), rgba(0,0,0,0.6));
+      pointer-events: none;
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
