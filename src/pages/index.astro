@@ -1,93 +1,97 @@
-
+---
+/*  */
+---
 
 <html lang="fi">
   <head>
     <meta charset="UTF-8" />
-    <title>K</title>
+    <title>Terminal</title>
 
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
       html, body {
-        width: 100%;
+        margin: 0;
         height: 100%;
         background: #000;
-        overflow: hidden;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #00ff00;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
-      .slider {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
+      .terminal {
+        width: 80%;
+        max-width: 800px;
+        height: 60%;
+        background: #000;
+        border: 2px solid #00ff00;
+        padding: 20px;
+        box-shadow: 0 0 20px #00ff00;
+        overflow-y: auto;
+        font-size: 18px;
       }
 
-      .slide {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        transform: scale(1.05);
+      .input-line {
+        display: flex;
       }
 
-      .slide.active {
-        opacity: 1;
-        animation: zoom 10s ease-in-out forwards;
+      .prompt {
+        margin-right: 10px;
       }
 
-      @keyframes zoom {
-        from { transform: scale(1.05); }
-        to { transform: scale(1.15); }
-      }
-
-      .overlay {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at center, rgba(0,0,0,0.1), rgba(0,0,0,0.6));
-        pointer-events: none;
-      }
-
-      .caption {
-        position: absolute;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #fff;
-        font-size: 20px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        opacity: 0.85;
+      #input {
+        outline: none;
+        border: none;
+        background: transparent;
+        color: #00ff00;
+        font-family: inherit;
+        font-size: inherit;
+        flex: 1;
       }
     </style>
   </head>
 
   <body>
-    <div class="slider">
-      <div class="slide active" style="background-image: url('/kuva1.jpg');"></div>
-      <div class="slide" style="background-image: url('/kuva2.jpg');"></div>
-      <div class="slide" style="background-image: url('/kuva3.jpg');"></div>
-
-      <div class="overlay"></div>
-      <div class="caption">K</div>
+    <div class="terminal" id="terminal">
+      <div class="input-line">
+        <span class="prompt">></span>
+        <input id="input" autofocus />
+      </div>
     </div>
 
     <script>
-      const slides = document.querySelectorAll('.slide');
-      let index = 0;
+      const input = document.getElementById("input");
+      const terminal = document.getElementById("terminal");
 
-      setInterval(() => {
-        slides[index].classList.remove('active');
-        index = (index + 1) % slides.length;
-        slides[index].classList.add('active');
-      }, 5000);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const command = input.value.trim();
+
+          // Print
+          const line = document.createElement("div");
+          line.textContent = "> " + command;
+          terminal.insertBefore(line, terminal.lastElementChild);
+
+          // cmnds
+          if (command === "hello") {
+            const out = document.createElement("div");
+            out.textContent = "Hello!";
+            terminal.insertBefore(out, terminal.lastElementChild);
+          }
+
+          if (command === "help") {
+            const out = document.createElement("div");
+            out.textContent = "what can I help you with?";
+            terminal.insertBefore(out, terminal.lastElementChild);
+          }
+
+          
+          input.value = "";
+
+          
+          terminal.scrollTop = terminal.scrollHeight;
+        }
+      });
     </script>
   </body>
 </html>
