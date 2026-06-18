@@ -20,8 +20,8 @@
       }
 
       .terminal {
-        width: 90%;
-        max-width: 1200px;
+        width: 80%;
+        max-width: 1400px;
         height: 100px;
         background: #000;
         border: 2px solid #00ff00;
@@ -48,6 +48,16 @@
         font-size: inherit;
         flex: 1;
       }
+
+      /* Syntax error - vilkkuva punainen */
+      .error {
+        color: #ff3333;
+        animation: blink 0.8s step-start infinite;
+      }
+
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
     </style>
   </head>
 
@@ -63,32 +73,53 @@
       const input = document.getElementById("input");
       const terminal = document.getElementById("terminal");
 
+      function printLine(text, cssClass = "") {
+        const line = document.createElement("div");
+        line.textContent = text;
+        if (cssClass) line.classList.add(cssClass);
+        terminal.insertBefore(line, terminal.lastElementChild);
+      }
+
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           const command = input.value.trim();
 
-          // Print
-          const line = document.createElement("div");
-          line.textContent = "> " + command;
-          terminal.insertBefore(line, terminal.lastElementChild);
+          // Tulosta komento
+          printLine("> " + command);
 
-          // cmnds
-          if (command === "hello") {
-            const out = document.createElement("div");
-            out.textContent = "Hello!";
-            terminal.insertBefore(out, terminal.lastElementChild);
+          // WHOAMI
+          if (command === "whoami") {
+            const info = [
+              "Browser: " + navigator.userAgent,
+              "Language: " + navigator.language,
+              "Platform: " + navigator.platform,
+              "Screen: " + window.screen.width + "x" + window.screen.height,
+              "Timezone: " + Intl.DateTimeFormat().resolvedOptions().timeZone,
+              "Touch support: " + ("ontouchstart" in window),
+              "Dark mode: " + window.matchMedia("(prefers-color-scheme: dark)").matches
+            ];
+            info.forEach(line => printLine(line));
           }
 
-          if (command === "help") {
-            const out = document.createElement("div");
-            out.textContent = "what can I help you with?";
-            terminal.insertBefore(out, terminal.lastElementChild);
+          // HELLO
+          else if (command === "hello") {
+            printLine("Hello, Pekka.");
           }
 
-          
+          // help
+          else if (command === "help") {
+            printLine("What can I help you with?");
+          }
+
+          // SYNTAX ERROR
+          else if (command !== "") {
+            printLine("Syntax error: unknown command '" + command + "'", "error");
+          }
+
+          // Tyhjennä input
           input.value = "";
 
-          
+          // Scrollaa alas
           terminal.scrollTop = terminal.scrollHeight;
         }
       });
