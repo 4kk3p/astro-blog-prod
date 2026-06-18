@@ -26,4 +26,96 @@
         background: #000;
         border: 2px solid #00ff00;
         padding: 20px;
-        box
+        box-shadow: 0 0 20px #00ff00;
+        overflow-y: auto;
+        font-size: 18px;
+      }
+
+      .input-line {
+        display: flex;
+      }
+
+      .prompt {
+        margin-right: 10px;
+      }
+
+      #input {
+        outline: none;
+        border: none;
+        background: transparent;
+        color: #00ff00;
+        font-family: inherit;
+        font-size: inherit;
+        flex: 1;
+      }
+
+      /* Syntax error - vilkkuva punainen */
+      .error {
+        color: #ff3333;
+        animation: blink 0.8s step-start infinite;
+      }
+
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="terminal" id="terminal">
+      <div class="input-line" id="input-line">
+        <span class="prompt">></span>
+        <input id="input" autofocus />
+      </div>
+    </div>
+
+    <script>
+      const input = document.getElementById("input");
+      const terminal = document.getElementById("terminal");
+      const inputLine = document.getElementById("input-line");
+
+      function printLine(text, cssClass = "") {
+        const line = document.createElement("div");
+        line.textContent = text;
+        if (cssClass) line.classList.add(cssClass);
+        terminal.insertBefore(line, inputLine);
+      }
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const command = input.value.trim();
+
+          printLine("> " + command);
+
+          if (command === "whoami") {
+            const info = [
+              "Browser: " + navigator.userAgent,
+              "Language: " + navigator.language,
+              "Platform: " + navigator.platform,
+              "Screen: " + window.screen.width + "x" + window.screen.height,
+              "Timezone: " + Intl.DateTimeFormat().resolvedOptions().timeZone,
+              "Touch support: " + ("ontouchstart" in window),
+              "Dark mode: " + window.matchMedia("(prefers-color-scheme: dark)").matches
+            ];
+            info.forEach(line => printLine(line));
+          }
+
+          else if (command === "hello") {
+            printLine("Hello stranger! (:");
+          }
+
+          else if (command === "help") {
+            printLine("What can I help you with?");
+          }
+
+          else if (command !== "") {
+            printLine("Syntax error: unknown command '" + command + "'", "error");
+          }
+
+          input.value = "";
+          terminal.scrollTop = terminal.scrollHeight;
+        }
+      });
+    </script>
+  </body>
+</html>
