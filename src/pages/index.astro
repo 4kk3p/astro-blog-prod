@@ -7,7 +7,6 @@
     <meta charset="UTF-8" />
     <title>Terminal</title>
 
-    <!-- HUOM: is:global lisätty -->
     <style is:global>
       html, body {
         margin: 0;
@@ -75,11 +74,18 @@
       const terminal = document.getElementById("terminal");
       const inputLine = document.getElementById("input-line");
 
+      // 🔧 Korjattu printLine — animaatio toimii varmasti
       function printLine(text, cssClass = "") {
         const line = document.createElement("div");
         line.textContent = text;
-        if (cssClass) line.classList.add(cssClass);
+
         terminal.insertBefore(line, inputLine);
+
+        if (cssClass) {
+          requestAnimationFrame(() => {
+            line.classList.add(cssClass);
+          });
+        }
       }
 
       input.addEventListener("keydown", (e) => {
