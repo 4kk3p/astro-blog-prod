@@ -22,7 +22,7 @@
       .terminal {
         width: 80%;
         max-width: 1400px;
-        height: 400px; /* isompi laatikko */
+        height: 400px;
         background: #000;
         border: 2px solid #00ff00;
         padding: 20px;
@@ -48,17 +48,6 @@
         font-family: inherit;
         font-size: inherit;
         flex: 1;
-      }
-
-      /* 🔴 UUSI: punainen “pulssi” joka toimii aina */
-      .error {
-        color: #ff3333;
-        animation: pulse 0.6s infinite alternate;
-      }
-
-      @keyframes pulse {
-        from { color: #ff3333; }
-        to   { color: #aa0000; }
       }
 
       /* 🟩 Vihreä vilkkuva kursori */
@@ -91,17 +80,23 @@
       const terminal = document.getElementById("terminal");
       const inputLine = document.getElementById("input-line");
 
-      // 🔧 printLine toimii varmasti
       function printLine(text, cssClass = "") {
         const line = document.createElement("div");
         line.textContent = text;
+        if (cssClass) line.classList.add(cssClass);
         terminal.insertBefore(line, inputLine);
+        return line;
+      }
 
-        if (cssClass) {
-          requestAnimationFrame(() => {
-            line.classList.add(cssClass);
-          });
-        }
+      // 🔥 100 % toimiva vilkkuva error-efekti (tekstin vaihtaminen)
+      function makeErrorFlash(element) {
+        let visible = true;
+        setInterval(() => {
+          element.textContent = visible
+            ? element.textContent.toUpperCase()
+            : element.textContent.toLowerCase();
+          visible = !visible;
+        }, 300);
       }
 
       input.addEventListener("keydown", (e) => {
@@ -132,7 +127,8 @@
           }
 
           else if (command !== "") {
-            printLine("Syntax error: unknown command '" + command + "'", "error");
+            const err = printLine("Syntax error: unknown command '" + command + "'");
+            makeErrorFlash(err); // 🔥 tämä toimii aina
           }
 
           input.value = "";
