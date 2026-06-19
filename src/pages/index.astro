@@ -22,7 +22,7 @@
       .terminal {
         width: 80%;
         max-width: 1400px;
-        height: 40%;              
+        height: 400px; /* isompi laatikko */
         background: #000;
         border: 2px solid #00ff00;
         padding: 20px;
@@ -50,10 +50,15 @@
         flex: 1;
       }
 
-      /* 🔴 Syntax error - vilkkuva punainen */
+      /* 🔴 UUSI: punainen “pulssi” joka toimii aina */
       .error {
         color: #ff3333;
-        animation: blink 0.8s step-start infinite;
+        animation: pulse 0.6s infinite alternate;
+      }
+
+      @keyframes pulse {
+        from { color: #ff3333; }
+        to   { color: #aa0000; }
       }
 
       /* 🟩 Vihreä vilkkuva kursori */
@@ -86,11 +91,10 @@
       const terminal = document.getElementById("terminal");
       const inputLine = document.getElementById("input-line");
 
-      // 🔧 Korjattu printLine — animaatio toimii varmasti
+      // 🔧 printLine toimii varmasti
       function printLine(text, cssClass = "") {
         const line = document.createElement("div");
         line.textContent = text;
-
         terminal.insertBefore(line, inputLine);
 
         if (cssClass) {
@@ -113,8 +117,8 @@
               "Platform: " + navigator.platform,
               "Screen: " + window.screen.width + "x" + window.screen.height,
               "Timezone: " + Intl.DateTimeFormat().resolvedOptions().timeZone,
-              "Touch support: " + ("ontouchstart" in window),
-              "Dark mode: " + window.matchMedia("(prefers-color-scheme: dark)").matches
+              "Touch support: " + ('ontouchstart' in window),
+              "Dark mode: " + window.matchMedia('(prefers-color-scheme: dark)').matches
             ];
             info.forEach(line => printLine(line));
           }
