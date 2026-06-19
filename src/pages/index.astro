@@ -20,9 +20,9 @@
       }
 
       .terminal {
-        width: 10%;
-        max-width: 800px;
-        height: 30%
+        width: 80%;
+        max-width: 1400px;
+        height: 400px;              /* isompi laatikko */
         background: #000;
         border: 2px solid #00ff00;
         padding: 20px;
@@ -33,6 +33,7 @@
 
       .input-line {
         display: flex;
+        align-items: center;
       }
 
       .prompt {
@@ -55,6 +56,16 @@
         animation: blink 0.8s step-start infinite;
       }
 
+      /* 🟩 Vihreä vilkkuva kursori */
+      .cursor {
+        display: inline-block;
+        width: 10px;
+        height: 20px;
+        background: #00ff00;
+        margin-left: 4px;
+        animation: blink 0.8s step-start infinite;
+      }
+
       @keyframes blink {
         50% { opacity: 0; }
       }
@@ -66,6 +77,7 @@
       <div class="input-line" id="input-line">
         <span class="prompt">></span>
         <input id="input" autofocus />
+        <span class="cursor"></span>
       </div>
     </div>
 
@@ -112,7 +124,7 @@
           }
 
           else if (command === "help") {
-            printLine("What can I help you with?");
+            printLine("Available commands: hello, help, whoami");
           }
 
           else if (command !== "") {
