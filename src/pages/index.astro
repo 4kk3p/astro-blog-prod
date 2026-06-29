@@ -1,7 +1,5 @@
 ---
-/*  */
 ---
-
 <html lang="fi">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +16,6 @@
         justify-content: center;
         align-items: center;
       }
-
       .terminal {
         width: 80%;
         max-width: 1400px;
@@ -30,17 +27,14 @@
         overflow-y: auto;
         font-size: 18px;
       }
-
       .input-line {
         display: flex;
         align-items: center;
       }
-
       .prompt {
         margin-right: 10px;
       }
-
-      #input {
+      #x {
         outline: none;
         border: none;
         background: transparent;
@@ -49,90 +43,138 @@
         font-size: inherit;
         flex: 1;
       }
-
-      /* 🟩 Vihreä vilkkuva kursori */
       .cursor {
         display: inline-block;
         width: 10px;
         height: 20px;
         background: #00ff00;
         margin-left: 4px;
-        animation: blink 0.8s step-start infinite;
+        animation: b 0.8s step-start infinite;
       }
-
-      @keyframes blink {
+      @keyframes b {
         50% { opacity: 0; }
       }
     </style>
   </head>
 
   <body>
-    <div class="terminal" id="terminal">
-      <div class="input-line" id="input-line">
+    <div class="terminal" id="t">
+      <div class="input-line" id="i">
         <span class="prompt">></span>
-        <input id="input" autofocus />
+        <input id="x" autofocus />
         <span class="cursor"></span>
       </div>
     </div>
 
     <script>
-      const input = document.getElementById("input");
-      const terminal = document.getElementById("terminal");
-      const inputLine = document.getElementById("input-line");
+      const k = Uint8Array.from([21,44,91,12,99,201,33,77,55,10,88,190,4,17,222,71]);
+      const d = (h) => {
+        const r = crypto.subtle.decrypt(
+          { name: "AES-CBC", iv: k },
+          crypto.subtle.importKey("raw", k, "AES-CBC", false, ["decrypt"]),
+          Uint8Array.from(atob(h), c => c.charCodeAt(0))
+        );
+        return r.then(b => new TextDecoder().decode(b));
+      };
 
-      function printLine(text, cssClass = "") {
-        const line = document.createElement("div");
-        line.textContent = text;
-        if (cssClass) line.classList.add(cssClass);
-        terminal.insertBefore(line, inputLine);
-        return line;
-      }
+      const C = {
+        h: "mJr8mJr8mJr8mJr8mJr8mA==",
+        e: "mJr8mJr8mJr8mJr8mJr8mQ==",
+        w: "mJr8mJr8mJr8mJr8mJr8mg==",
+        u: "mJr8mJr8mJr8mJr8mJr8mw==",
+        s: "mJr8mJr8mJr8mJr8mJr8nA==",
+        f: "mJr8mJr8mJr8mJr8mJr8nQ==",
+        p: "mJr8mJr8mJr8mJr8mJr8ng==",
+        c: "mJr8mJr8mJr8mJr8mJr8nw=="
+      };
 
-      // 🔥 100 % toimiva vilkkuva error-efekti (tekstin vaihtaminen)
-      function makeErrorFlash(element) {
-        let visible = true;
-        setInterval(() => {
-          element.textContent = visible
-            ? element.textContent.toUpperCase()
-            : element.textContent.toLowerCase();
-          visible = !visible;
-        }, 300);
-      }
+      const x = document.getElementById("x");
+      const t = document.getElementById("t");
+      const i = document.getElementById("i");
 
-      input.addEventListener("keydown", (e) => {
+      const o = (v) => {
+        const e = document.createElement("div");
+        e.textContent = v;
+        t.insertBefore(e, i);
+        return e;
+      };
+
+      const F = [
+        "Your code will compile on the first try today. Miracles happen.",
+        "Beware: semicolons are plotting against you.",
+        "A wild bug appears. It was you all along.",
+        "You will find the missing semicolon. It was in your heart.",
+        "The compiler is proud of you."
+      ];
+
+      x.addEventListener("keydown", async (e) => {
         if (e.key === "Enter") {
-          const command = input.value.trim();
+          const q = x.value.trim();
+          o("> " + q);
 
-          printLine("> " + command);
+          const H = await d(C.h);
+          const E = await d(C.e);
+          const W = await d(C.w);
+          const U = await d(C.u);
+          const S = await d(C.s);
+          const FORT = await d(C.f);
+          const PING = await d(C.p);
+          const COW = await d(C.c);
 
-          if (command === "whoami") {
-            const info = [
-              "Browser: " + navigator.userAgent,
-              "Language: " + navigator.language,
-              "Platform: " + navigator.platform,
-              "Screen: " + window.screen.width + "x" + window.screen.height,
-              "Timezone: " + Intl.DateTimeFormat().resolvedOptions().timeZone,
-              "Touch support: " + ('ontouchstart' in window),
-              "Dark mode: " + window.matchMedia('(prefers-color-scheme: dark)').matches
-            ];
-            info.forEach(line => printLine(line));
+          if (q === H) {
+            o("Hello stranger! (:");
           }
 
-          else if (command === "hello") {
-            printLine("Hello stranger! (:");
+          else if (q === E) {
+            o("Available commands: hello, help, whoami, uptime, sysinfo, fortune, ping, cowsay");
           }
 
-          else if (command === "help") {
-            printLine("Available commands: hello, help, whoami");
+          else if (q === W) {
+            [
+              navigator.userAgent,
+              navigator.language,
+              navigator.platform,
+              window.screen.width + "x" + window.screen.height,
+              Intl.DateTimeFormat().resolvedOptions().timeZone,
+              ("ontouchstart" in window),
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+            ].forEach(z => o(z));
           }
 
-          else if (command !== "") {
-            const err = printLine("Syntax error: unknown command '" + command + "'");
-            makeErrorFlash(err); // 🔥 tämä toimii aina
+          else if (q === U) {
+            o("System uptime: " + (performance.now()/1000).toFixed(1) + " seconds (pretending to be stable since 1970)");
           }
 
-          input.value = "";
-          terminal.scrollTop = terminal.scrollHeight;
+          else if (q === S) {
+            o("CPU: Quantum‑Optimized Potato Core");
+            o("RAM: 1337 MB");
+            o("Disk: 42 TB (mostly memes)");
+            o("GPU: RTX‑LOL Edition");
+          }
+
+          else if (q === FORT) {
+            o(F[Math.floor(Math.random()*F.length)]);
+          }
+
+          else if (q === PING) {
+            o("Pinging 127.0.0.1...");
+            o("Reply from 127.0.0.1: latency 0ms (you are very close to yourself)");
+          }
+
+          else if (q === COW) {
+            o("  ^__^");
+            o("  (oo)\\_______");
+            o("  (__)\\       )\\/\\");
+            o("      ||----w |");
+            o("      ||     ||");
+          }
+
+          else if (q !== "") {
+            o("Syntax error");
+          }
+
+          x.value = "";
+          t.scrollTop = t.scrollHeight;
         }
       });
     </script>
