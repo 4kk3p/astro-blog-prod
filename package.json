@@ -19,9 +19,7 @@
 		"astro": "5.16.9",
 		"typescript": "5.9.3"
 	},
-	"devDependencies": {
-		"wrangler": "4.88.0"
-	},
+	
 	"engines": {
 		"node": ">=22"
 	},
